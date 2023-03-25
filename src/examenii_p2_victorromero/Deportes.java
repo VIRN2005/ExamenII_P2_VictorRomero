@@ -1,8 +1,9 @@
 package examenii_p2_victorromero;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Deportes {
+public class Deportes implements Serializable{
 
     private String nombre;
     private ArrayList<Torneos> torneos;

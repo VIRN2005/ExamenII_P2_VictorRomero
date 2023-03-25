@@ -4,8 +4,15 @@
  */
 package examenii_p2_victorromero;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -53,7 +60,7 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtree_Torneos = new javax.swing.JTree();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        Guardar = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jProgressBar1 = new javax.swing.JProgressBar();
 
@@ -156,11 +163,21 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jtree_Torneos);
 
         jButton2.setText("Cargar");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
 
-        jButton3.setText("Guardar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        Guardar.setText("Guardar");
+        Guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GuardarMouseClicked(evt);
+            }
+        });
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                GuardarActionPerformed(evt);
             }
         });
 
@@ -189,7 +206,7 @@ public class Main extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(58, 58, 58)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -207,7 +224,7 @@ public class Main extends javax.swing.JFrame {
                         .addGap(32, 32, 32)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -285,9 +302,72 @@ public class Main extends javax.swing.JFrame {
         LlenarArbol();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_GuardarActionPerformed
+
+    private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
+        JFileChooser filechooser = new JFileChooser();
+        int op = filechooser.showSaveDialog(Guardar);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = filechooser.getSelectedFile();
+                if (!file.exists()) {
+                    file = new File(file.getPath() + ".virn");
+                    //La mejor extension del mundo
+                }
+                String[] path = file.getPath().split("\\.");
+                if (path[path.length - 1].equals("virn")) {
+                    //Repito la mejor extension del mundomm;
+                    ProgressBar pb = new ProgressBar(jProgressBar1, ((Deportes) jComboBox1.getSelectedItem()));
+
+                    pb.start();
+                    FileOutputStream f_out = new FileOutputStream(file, false);
+                    ObjectOutputStream o_output = new ObjectOutputStream(f_out);
+                    o_output.writeObject(((Deportes) jComboBox1.getSelectedItem()));
+                    f_out.close();
+                    o_output.close();
+                } else {
+                    JOptionPane.showMessageDialog(filechooser, "Opcion NO VALIDA");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_GuardarMouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        JFileChooser filechooser = new JFileChooser();
+        int op = filechooser.showSaveDialog(Guardar);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = filechooser.getSelectedFile();
+                if (f.exists()) {
+                    String[] path = f.getPath().split("\\.");
+                    if (path[path.length - 1].equals("virn")) {
+                        FileInputStream in = new FileInputStream(f);
+                        ObjectInputStream Ob_input = new ObjectInputStream(in);
+                        try {
+                            Deportes deporte = (Deportes) Ob_input.readObject();
+                            deportes.add(deporte);
+                            LlenarArbol();
+                        } catch (EOFException ex) {
+                        }
+                        in.close();
+                        Ob_input.close();
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "File Not Supported");
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        RefreshComboBox();
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -379,10 +459,10 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Guardar;
     private javax.swing.JPopupMenu Pop_Deportes;
     private javax.swing.JPopupMenu Pop_Torneos;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
