@@ -9,8 +9,7 @@ public class Partidos {
     public Partidos() {
     }
 
-    public Partidos(String[] equipos, int puntEqui1, int puntEqui2) {
-        this.equipos = equipos;
+    public Partidos(int puntEqui1, int puntEqui2) {
         this.puntEqui1 = puntEqui1;
         this.puntEqui2 = puntEqui2;
     }
