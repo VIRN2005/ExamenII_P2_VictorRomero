@@ -5,6 +5,7 @@
 package examenii_p2_victorromero;
 
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,7 +22,9 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+
         LlenarArbol();
+        RefreshComboBox();
     }
 
     /**
@@ -35,28 +38,75 @@ public class Main extends javax.swing.JFrame {
 
         jPopupInicial = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        Pop_Torneos = new javax.swing.JPopupMenu();
+        Pop_Deportes = new javax.swing.JPopupMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        Pop_Torneos = new javax.swing.JPopupMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtree_Torneos = new javax.swing.JTree();
-        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jProgressBar1 = new javax.swing.JProgressBar();
 
         jPopupInicial.setComponentPopupMenu(jPopupInicial);
 
         jMenuItem1.setText("Crear Deporte");
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem1MouseClicked(evt);
+            }
+        });
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jPopupInicial.add(jMenuItem1);
 
-        jMenuItem4.setText("AñadirDeporte");
+        jMenuItem4.setText("Añadir Torneo");
+        jMenuItem4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem4MouseClicked(evt);
+            }
+        });
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
             }
         });
-        Pop_Torneos.add(jMenuItem4);
+        Pop_Deportes.add(jMenuItem4);
+
+        jMenuItem6.setText("Agregar Equipos");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        Pop_Torneos.add(jMenuItem6);
+
+        jMenuItem2.setText("Listar Equipos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        Pop_Torneos.add(jMenuItem2);
+        Pop_Torneos.add(jSeparator2);
+
+        jMenuItem3.setText("Tabla de Clasificacion");
+        Pop_Torneos.add(jMenuItem3);
+
+        jMenuItem5.setText("Simulacion");
+        Pop_Torneos.add(jMenuItem5);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -72,9 +122,9 @@ public class Main extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,12 +155,17 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtree_Torneos);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Cargar");
+
+        jButton3.setText("Guardar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
+
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -120,71 +175,119 @@ public class Main extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 784, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(208, 208, 208)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
+
+        jProgressBar1.getAccessibleContext().setAccessibleName("");
+        jProgressBar1.getAccessibleContext().setAccessibleDescription("");
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 770, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jtree_TorneosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtree_TorneosMouseClicked
-//        if (SwingUtilities.isRightMouseButton(evt)) {
-//            jPopupMenu1.show(jtree_Torneos, evt.getX(), evt.getY());
-//        } else {
-//            if (evt.isMetaDown()) {
-//                System.out.println("pero1");
-//                int row = jtree_Torneos.getClosestRowForLocation(evt.getX(), evt.getY());
-//                jtree_Torneos.setSelectionRow(row);
-//                Object v1 = jtree_Torneos.getSelectionPath().getLastPathComponent();
-//                Torneos torneoSelecc = new Torneos();
-//                DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) v1;
-//                if (nodo.getUserObject().toString().equals("Q1")) {
-//                    Pop_Torneos.show(evt.getComponent(), evt.getX(), evt.getY());
-//                    deportes.add(crearDeporte());
-//                }
-//                if (nodo.getUserObject().toString().equals("Q2")) {
-//                    Pop_Torneos.show(evt.getComponent(), evt.getX(), evt.getY());
-//                    deportes.add(crearDeporte());
-//                }
-//                if (nodo.getUserObject().toString().equals("Q4")) {
-//                    Pop_Torneos.show(evt.getComponent(), evt.getX(), evt.getY());
-//                    deportes.add(crearDeporte());
-//                }
-//                if (nodo.getUserObject().toString().equals("Q5")) {
-//                    Pop_Torneos.show(evt.getComponent(), evt.getX(), evt.getY());
-//                    deportes.add(crearDeporte());
-//                
+        if (evt.isMetaDown()) {
+            int row = jtree_Torneos.getClosestRowForLocation(evt.getX(), evt.getY());
+            jtree_Torneos.setSelectionRow(row);
+            Object v1 = jtree_Torneos.getSelectionPath().getLastPathComponent();
+            nodo_sel = (DefaultMutableTreeNode) v1;
 
-        if (SwingUtilities.isRightMouseButton(evt)) {
-            jPopupInicial.show(jtree_Torneos, evt.getX(), evt.getY());
+            if (nodo_sel.getUserObject() instanceof Deportes) {
+                Pop_Deportes.show(evt.getComponent(), evt.getX(), evt.getX());
+            } else if (nodo_sel.getUserObject() instanceof Torneos) {
+                Pop_Torneos.show(evt.getComponent(), evt.getX(), evt.getX());
+            } else {
+                jPopupInicial.show(evt.getComponent(), evt.getX(), evt.getX());
+            }
         }
     }//GEN-LAST:event_jtree_TorneosMouseClicked
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        for (Deportes deporte : deportes) {
+            if (deporte.getNombre().equals(nodo_sel.getUserObject().toString())) {
+                String name = JOptionPane.showInputDialog("Ingrese el Torneo: ");
+                deporte.getTorneos().add(new Torneos(name, nodo_sel.getParent().toString()));
+            }
+        }
+        LlenarArbol();
+        RefreshComboBox();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
+        crearDeporte();
+    }//GEN-LAST:event_jMenuItem1MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        deportes.add(crearDeporte());
+        LlenarArbol();
+        RefreshComboBox();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem4MouseClicked
+        if (evt.isMetaDown()) {
+            System.out.println("pero1");
+            int row = jtree_Torneos.getClosestRowForLocation(evt.getX(), evt.getY());
+            jtree_Torneos.setSelectionRow(row);
+            Object v1 = jtree_Torneos.getSelectionPath().getLastPathComponent();
+            Torneos torneoSelecc = new Torneos();
+            DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) v1;
+        }
+    }//GEN-LAST:event_jMenuItem4MouseClicked
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        for (Deportes deporte : deportes) {
+            for (Torneos torneos : deporte.getTorneos()) {
+                if (torneos.getNombre().equals(nodo_sel.getUserObject().toString())) {
+                    String name = JOptionPane.showInputDialog("Ingrese el Equipo a Agregar: ");
+                    torneos.getEquipos().add(new Equipos(name, 0));
+                }
+            }
+        }
+        LlenarArbol();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,9 +333,18 @@ public class Main extends javax.swing.JFrame {
     }
 
     public Deportes crearDeporte() {
-        Deportes dep = new Deportes(JOptionPane.showInputDialog("Ingrese el Nombre"));
-
+        String nombre = JOptionPane.showInputDialog("Ingrese el Nombre");
+        Deportes dep = new Deportes(nombre, new ArrayList<>());
+        RefreshComboBox();
         return dep;
+    }
+
+    public void RefreshComboBox() {
+        DefaultComboBoxModel mod_Combo = (DefaultComboBoxModel) jComboBox1.getModel();
+        mod_Combo.removeAllElements();
+        for (Deportes deporte : deportes) {
+            mod_Combo.addElement(deporte);
+        }
     }
 
     public void LlenarArbol() {
@@ -267,18 +379,30 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu Pop_Deportes;
     private javax.swing.JPopupMenu Pop_Torneos;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu jPopupInicial;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTree jtree_Torneos;
     // End of variables declaration//GEN-END:variables
 
     ArrayList<Deportes> deportes = new ArrayList();
+    DefaultMutableTreeNode nodo_sel;
+    Deportes dep_sel;
+    Torneos tor_sel;
 }

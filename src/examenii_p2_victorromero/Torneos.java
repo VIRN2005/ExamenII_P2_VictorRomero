@@ -19,6 +19,12 @@ public class Torneos {
         this.periodo = periodo;
     }
 
+    public Torneos(String nombre, String periodo) {
+        this.nombre = nombre;
+        this.periodo = periodo;
+    }
+    
+
     public String getNombre() {
         return nombre;
     }
@@ -53,7 +59,7 @@ public class Torneos {
 
     @Override
     public String toString() {
-        return "Torneos{" + "nombre=" + nombre + ", equipos=" + equipos + ", partidos=" + partidos + ", periodo=" + periodo + '}';
+        return nombre;
     }
     
     

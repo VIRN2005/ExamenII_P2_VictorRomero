@@ -38,7 +38,7 @@ public class Deportes {
 
     @Override
     public String toString() {
-        return "Deportes{" + "nombre=" + nombre + ", torneos=" + torneos + '}';
+        return nombre;
     }
 
 }
